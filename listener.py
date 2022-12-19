@@ -91,13 +91,12 @@ class listener(ProcessStateMonitor):
         """
 
         webhook = SyncWebhook.from_url(self.webhook)
-
         for n in list(self.chunk(notifications)):
             embeds = []
             for e in n:
                 info = {"processname": e[0], "hostname": e[1], "eventname": e[2], "from_state": e[3]}
                 embed = Embed.from_dict(self.EMBEDS[e[2]])
-                embed.description.format(**info)
+                embed.description = embed.description.format(**info)
                 embeds += [embed]
 
             webhook.send(embeds=embeds, username="Supervisor Status")
